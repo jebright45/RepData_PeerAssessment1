@@ -3,6 +3,7 @@ title: 'Reproducible Research: Project 1: Activity Data'
 author: "Jake Ebright"
 date: "2/25/2020"
 output: html_document
+keep_md: true
 ---
 
 ```{r, echo = TRUE, eval = TRUE}
@@ -39,8 +40,12 @@ names(totalstepsperday) <- c("Day", "TotalSteps")
 
 # Histogram like plot (no spaces) of total steps per day
 
+png(filename = "Total Number of Steps per Day.png")
 barplot(height = totalstepsperday$TotalSteps, names.arg = totalstepsperday$Day, space = 0, col = "lightblue", main = "Total Number of Steps per Day", ylab = "Number of Steps", xlab = "Day",
         ylim = c(0, 35000), axes = TRUE, cex.names = 0.7)
+dev.off()
+
+
 
 # Calculating mean and median of thte total number of steps taken per day.
 mean(totalstepsperday$TotalSteps) # 18,406.71
@@ -57,11 +62,11 @@ median(totalstepsperday$TotalSteps) # 20,525
 library(dplyr)
 library(ggplot2)
 
+png(filename = "Total Steps by Day Before Mean Replacement.png")
 totalsteps_perday_premeanreplace_plot <- totalstepsperday %>% ggplot(aes(x = Day, y = TotalSteps)) + geom_line()
 totalsteps_perday_premeanreplace_plot <- totalsteps_perday_premeanreplace_plot + xlab(label = "Day") + ylab(label = "Total Steps") + ggtitle(label = "Total Steps by Day Before Mean Replacement") + theme(plot.title = element_text(hjust = 0.5))
 totalsteps_perday_premeanreplace_plot
-
-
+dev.off()
 
 
 # Arranging totalstepsbyinterval by largest to smallest to see which is the greatest to answer their question.
@@ -112,9 +117,14 @@ mean(totalstepsperday_meanreplaced$TotalSteps) # 21,185.08
 median(totalstepsperday_meanreplaced$TotalSteps) # 21,641
 
 # Plotting Total Steps per Day After Mean Replacement using ggplot2 plotting system.
+
+png(filename = "Total Steps by Day After Mean Replacement.png")
+
 totalsteps_perday_plot <- totalstepsperday_meanreplaced %>% ggplot(aes(x = Day, y = TotalSteps)) + geom_line()
 totalsteps_perday_plot <- totalsteps_perday_plot + xlab(label = "Day") + ylab(label = "Total Steps") + ggtitle(label = "Total Steps by Day After Mean Replacement") + theme(plot.title = element_text(hjust = 0.5))
 totalsteps_perday_plot
+
+dev.off()
 
 ```
 
@@ -137,6 +147,8 @@ activity2$daytype <- as.factor(as.character(activity2$daytype))
 library(ggplot2)
 library(dplyr)
 
+png(filename = "Weekday versus Weekend Average Steps by Interval.png")
+
 # Plotting average step by interval for each day type. The aggregate() funciton is a dream. Let's you put mnultiple variables to condition on in the list() section.
 totalstepsbyinterval_bydaytype <- aggregate(activity2$steps, by = list(activity2$interval, activity2$daytype), FUN = mean, na.rm = TRUE)
 names(totalstepsbyinterval_bydaytype) <- c("interval", "daytype", "steps")
@@ -151,6 +163,10 @@ steps_byinterval_byday_plot <- steps_byinterval_byday_plot + ggtitle(label = "We
 # Anyway, I got help for how to do the panel plots in ggplot 2 from the following website: http://www.sthda.com/english/wiki/ggplot2-facet-split-a-plot-into-a-matrix-of-panels
 steps_byinterval_byday_plot <- steps_byinterval_byday_plot + facet_grid(daytype ~ .)
 steps_byinterval_byday_plot
+
+dev.off()
+
+
 
 ```
 
